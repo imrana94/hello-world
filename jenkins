@@ -1,27 +1,17 @@
 pipeline {
-
 agent any
-
+tools {
+maven 'maven3'
+}
 stages {
-
 stage('build') {
-
 steps {
-echo 'building the application...'
+sh script: 'mvn clean package'
 }
 }
-
-stage('test') {
-
+stage('Upload War To Nexus') {
 steps {
-echo 'testing the application...'
-}
-}
-
-stage('deploy') {
-
-steps {
-echo 'deploying the application...'
+sh script: 'mvn clean package'
 }
 }
 }
