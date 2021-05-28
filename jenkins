@@ -15,13 +15,14 @@ nexusArtifactUploader artifacts: [
 [
 artifactId: 'maven-project'
 classifier: '',
-file: 'target/my-app-pipeline-1.0.0.war',
+file: 'target/maven-project-1.0.0.war',
 type: 'war'
 ]
 ],
-credentialsId: 'nexus2'
+credentialsId: 'Nexus'
 groupId: 'com.example.maven-project',
 nexusUrl: '18.116.72.128:8081',
+nexusVersion: 'nexus2',
 protocol: 'http'
 repository: 'http://18.116.72.128:8081/repository/pipeline/',
 version: '1.0.0'
