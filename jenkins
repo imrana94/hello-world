@@ -11,7 +11,20 @@ sh script: 'mvn clean package'
 }
 stage('Upload War To Nexus') {
 steps {
-sh script: 'mvn clean package'
+nexusArtifactUploader artifacts: [
+[
+artifactId: 'maven-project'
+classifier: '',
+file: 'target/my-app-pipeline-1.0.0.war',
+type: 'war'
+]
+],
+credentialsId: 'nexus2'
+groupId: 'com.example.maven-project',
+nexusUrl: '18.116.72.128:8081',
+protocol: 'http'
+repository: 'http://18.116.72.128:8081/repository/pipeline/',
+version: '1.0.0'
 }
 }
 }
