@@ -4,14 +4,14 @@ tools {
 maven 'maven2'
 }
 stages {
-stage('build') {
+stage('build'){
 steps {
 sh script: 'mvn clean package'
 }
 }
-stage('Upload War To Nexus') {
+stage('Upload War To Nexus'){
 steps {
-nexusArtifactUploader artifacts: [
+nexusArtifactUploader artifacts:[
 [
 artifactId: 'maven-project'
 classifier: '',
