@@ -11,7 +11,6 @@ sh script: 'mvn clean package'
 }
 stage('Upload War To Nexus'){
 steps{
-}
 nexusArtifactUploader artifacts:[
 [
 artifactId: 'maven-project'
