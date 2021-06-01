@@ -24,7 +24,7 @@ groupId: 'com.example.maven-project',
 nexusUrl: '18.116.72.128:8081',
 nexusVersion: 'nexus2',
 protocol: 'http'
-repository: 'pipeline',
+repository:'pipeline',
 version: '1.0.0'
 }
 }
