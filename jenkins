@@ -13,13 +13,13 @@ stage('Upload War To Nexus'){
 steps{
 nexusArtifactUploader artifacts:[
 [
-artifactId: 'maven-project'
+artifactId: 'maven-project',
 classifier: '',
 file: 'target/maven-project-1.0.0.war',
 type: 'war'
 ]
 ],
-credentialsId: 'Nexus'
+credentialsId: 'Nexus',
 groupId: 'com.example.maven-project',
 nexusUrl: '18.116.72.128:8081',
 nexusVersion: 'nexus2',
