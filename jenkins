@@ -4,7 +4,7 @@ pipeline {
  
      tools {
        
-        maven "Maven"
+        maven "maven"
         
     }
     environment {
@@ -13,11 +13,11 @@ pipeline {
         
         NEXUS_PROTOCOL = "http"
         
-        NEXUS_URL = "3.128.153.69:8081/"
+        NEXUS_URL = "18.116.72.128:8081/"
         
-        NEXUS_REPOSITORY = "ncodeit-scripted"
+        NEXUS_REPOSITORY = "pipeline"
         
-        NEXUS_CREDENTIAL_ID = "nexus-server"
+        NEXUS_CREDENTIAL_ID = "admin"
 }
     stages {
         stage("clone code") {
