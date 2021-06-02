@@ -1,32 +1,69 @@
 pipeline {
-agent any
-tools {
-maven 'maven'
+ 
+    agent any
+ 
+     tools {
+       
+        maven "Maven"
+        
+    }
+    environment {
+        
+        NEXUS_VERSION = "nexus3"
+        
+        NEXUS_PROTOCOL = "http"
+        
+        NEXUS_URL = "3.128.153.69:8081/"
+        
+        NEXUS_REPOSITORY = "ncodeit-scripted"
+        
+        NEXUS_CREDENTIAL_ID = "nexus-server"
 }
-stages{
-stage('build'){
-steps{
-sh script: 'mvn clean package'
-}
-}
-stage('Upload War To Nexus'){
-steps{
-nexusArtifactUploader artifacts:[
-[
-artifactId: 'maven-project',
-classifier: '',
-file: 'target/maven-project-1.0.0.war',
-type: 'war'
-]
-],
-credentialsId: 'Nexus',
-groupId: 'com.example.maven-project',
-nexusUrl: '18.116.72.128:8081',
-nexusVersion: 'nexus2',
-protocol: 'http'
-repository: 'pipeline',
-version: '1.0.0'
-}
-}
-}
-}
+    stages {
+        stage("clone code") {
+            steps {
+                script {
+               git 'https://github.com/betawins/test_pipeline_jobs.git';
+                        
+                } 
+            }
+        }
+        stage("mvn build") {
+            steps {
+                script {
+			  pom = readMavenPom file: "pom.xml";
+        filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+        echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    artifactPath = filesByGlob[0].path;
+                    artifactExists = fileExists artifactPath;
+                    if(artifactExists) {
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: pom.groupId,
+                            version: '${BUILD_NUMBER}',
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            artifacts: [
+                                // Artifact generated such as .jar, .ear and .war files.
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                // Lets upload the pom.xml file for additional information for Transitive dependencies
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        );
+                    } else {
+                        error "*** File: ${artifactPath}, could not be found";
+                    }
+					} 
+                }
+            }
+        }
+    }
